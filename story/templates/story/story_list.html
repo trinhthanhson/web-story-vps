@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title|default:"Thiên Mộng Hành - Danh Sách Truyện" }}</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'story/css/style.css' %}">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{% static 'story/js/base.js' %}"></script>
+
+</head>
+
+<body class="bg-dark-bg-body font-sans antialiased text-gray-100 min-h-screen flex flex-col"> 
+
+    {% include 'story/header/header.html' %}
+
+    <main class="flex-grow container mx-auto px-6 py-20">
+
+        <div class="flex items-center gap-3 mb-10">
+            <span class="w-1.5 h-8 bg-primary rounded-full shadow-[0_0_10px_#EAB308]"></span>
+            <h1 class="text-3xl md:text-4xl font-bold text-white tracking-tight">
+                {{ page_title|default:"Thiên Mộng Hành Truyện" }}
+            </h1>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
+            {% for story in stories %}
+            <div
+                class="story-card group relative flex flex-col h-full overflow-hidden rounded-xl bg-dark-bg-card border border-transparent hover:border-primary/50 transition-all duration-300">
+
+                <a href="{% url 'story_detail' story.slug %}" class="relative aspect-[3/4] block overflow-hidden">
+                    <img src="{{ story.cover_image_url }}" alt="{{ story.title }}"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent flex flex-col justify-end p-3">
+                        <h3 class="text-white font-logo text-sm text-center italic mb-1 line-clamp-2">
+                            {{ story.title }}
+                        </h3>
+                        <div class="flex justify-center">
+                            <span
+                                class="text-[9px] bg-white/10 backdrop-blur-sm text-gray-300 px-2 py-0.5 rounded-full border border-white/10">
+                                Edit: Trúc Mộng Yên
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="absolute top-2 left-2">
+                        <span
+                            class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-lg">FULL</span>
+                    </div>
+                </a>
+
+                <div class="p-3 text-center">
+                    <a href="{% url 'story_detail' story.slug %}"
+                        class="text-sm font-semibold hover:text-primary transition line-clamp-1">
+                        {{ story.title }}
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% if page_obj.has_other_pages %}
+        <div class="mt-16 flex justify-center">
+            <nav class="inline-flex items-center -space-x-px bg-dark-bg-card p-2 rounded-2xl border border-white/5 shadow-2xl backdrop-blur-md"
+                aria-label="Pagination">
+
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}"
+                    class="w-11 h-11 flex items-center justify-center rounded-xl text-gray-400 hover:bg-primary/20 hover:text-primary transition-all duration-300 group">
+                    <svg class="w-6 h-6 group-hover:-translate-x-1 transition-transform" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </a>
+                {% endif %}
+
+                <div class="flex items-center px-2 gap-1.5">
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <span
+                        class="w-11 h-11 flex items-center justify-center rounded-xl bg-primary text-black font-bold shadow-lg shadow-primary/30 transform scale-110 z-10">
+                        {{ num }}
+                    </span>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a
+                        href="?page={{ num }}"
+                        class="w-11 h-11 flex items-center justify-center rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all duration-200">
+                        {{ num }}
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                </div>
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}"
+                    class="w-11 h-11 flex items-center justify-center rounded-xl text-gray-400 hover:bg-primary/20 hover:text-primary transition-all duration-300 group">
+                    <svg class="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
+                {% endif %}
+
+            </nav>
+        </div>
+        {% endif %}
+    </main>
+
+    {% include 'story/footer/footer.html' %}
+    <script src="{% static 'story/js/home.js' %}"></script>
+    <script src="{% static 'story/js/header.js' %}"></script>
+
+</body>
+
+</html>

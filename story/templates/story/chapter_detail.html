@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+    <link rel="stylesheet" href="{% static 'story/css/style.css' %}">
+    <style>
+
+    </style>
+    <!-- Preload theme để tránh chớp -->
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{% static 'story/js/base.js' %}"></script>
+
+</head>
+
+<body class="font-sans antialiased chapter-detail-page">
+    <!-- Header -->
+    {% include 'story/header/header.html' %}
+
+    <!-- Nội dung -->
+    <div class="container mx-auto max-w-5xl my-10 mt-20 p-6 md:p-10 glass-panel rounded-2xl shadow-2xl">
+
+        <!-- Tiêu đề chương -->
+        <h1 class="text-3xl md:text-4xl font-extrabold text-primary text-center pb-4 mb-6 border-b border-gray-600">
+            {{ page_title }}
+        </h1>
+
+        <!-- Thông tin truyện -->
+        {% if story %}
+        <p class="text-center text-gray-400 mb-8">
+            Truyện:
+            <a href="{% url 'story_detail' story_slug=story.slug %}"
+                class="text-primary hover:text-secondary font-semibold">
+                {{ story.title }}
+            </a>
+            <span class="text-sm ml-1">| Tác giả: {{ story.author }}</span>
+        </p>
+        {% endif %}
+
+        <!-- Nội dung chương -->
+        <div class="chapter-content">
+            {% if chapter.content %}
+            {{ chapter.content|linebreaksbr }}
+            {% elif chapter.image_urls %}
+            {% for image_url in chapter.image_urls %}
+            <img src="{{ image_url }}" alt="Hình ảnh minh họa chương">
+            {% endfor %}
+            {% else %}
+            <p class="text-center text-gray-500 py-10">Chương này hiện chưa có nội dung.</p>
+            {% endif %}
+        </div>
+
+        <!-- Thanh điều hướng chương -->
+        <div class="flex justify-center gap-4 mt-12 pt-6 border-t border-gray-700">
+
+            {% if previous_chapter %}
+            <a href="{% url 'chapter_detail' story_slug=story.slug chapter_number=previous_chapter.chapter_number %}"
+                class="flex-1 max-w-[200px] btn-primary text-center py-3 px-6 rounded-lg font-bold shadow-md">
+                ← Chương trước
+            </a>
+            {% else %}
+            <button disabled
+                class="flex-1 max-w-[200px] bg-gray-300 text-gray-500 text-center py-3 px-6 rounded-lg font-bold shadow-md cursor-not-allowed">
+                ← Chương trước
+            </button>
+            {% endif %}
+
+            {% if next_chapter %}
+            <a href="{% url 'chapter_detail' story_slug=story.slug chapter_number=next_chapter.chapter_number %}"
+                class="flex-1 max-w-[200px] btn-primary text-center py-3 px-6 rounded-lg font-bold shadow-md">
+                Chương sau →
+            </a>
+            {% else %}
+            <button disabled
+                class="flex-1 max-w-[200px] bg-gray-300 text-gray-500 text-center py-3 px-6 rounded-lg font-bold shadow-md cursor-not-allowed">
+                Chương sau →
+            </button>
+            {% endif %}
+        </div>
+
+    </div>
+    {% include 'story/footer/footer.html' %}
+    <div id="font-control-container"
+        class="fixed right-0 top-1/2 -translate-y-1/2 z-50 flex items-center transition-all duration-500 translate-x-[calc(100%-40px)] hover:translate-x-0">
+
+        <button id="font-toggle-btn"
+            class="w-10 h-10 bg-primary text-black rounded-l-full flex items-center justify-center shadow-[-4px_0_10px_rgba(0,0,0,0.3)] focus:outline-none border-y border-l border-white/20">
+            <div class="flex flex-col items-center">
+                <span class="text-xs font-bold leading-none">A</span>
+                <span id="toggle-icon" class="text-[10px] transition-transform duration-300">❮</span>
+            </div>
+        </button>
+
+        <div
+            class="flex flex-col gap-2 p-2 bg-[#1a1a1a] border-l border-y border-white/10 rounded-l-2xl shadow-2xl min-w-[50px]">
+
+            <button onclick="changeFontSize(2)"
+                class="w-10 h-10 flex items-center justify-center bg-primary hover:bg-yellow-500 text-black rounded-xl font-bold text-xl active:scale-90 transition-all shadow-lg">
+                A+
+            </button>
+
+            <div class="flex flex-col items-center">
+                <span id="current-size-display" class="text-lg font-mono font-bold text-primary">18</span>
+                <span class="text-[8px] uppercase text-gray-500 font-bold">Size</span>
+            </div>
+
+            <button onclick="changeFontSize(-2)"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl font-bold text-sm active:scale-90 transition-all border border-white/5">
+                A-
+            </button>
+
+            <button onclick="resetFontSize()"
+                class="w-10 h-10 flex items-center justify-center bg-red-500/20 hover:bg-red-500 text-red-500 hover:text-white rounded-xl text-lg active:scale-90 transition-all border border-red-500/30">
+                ↺
+            </button>
+        </div>
+    </div>
+    <script src="{% static 'story/js/chapter_detail.js' %}"></script>
+
+</body>
+
+</html>

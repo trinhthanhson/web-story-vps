@@ -1,0 +1,103 @@
+{% load static %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'story/css/style.css' %}">
+
+<footer class="modern-footer border-t border-gray-700/50 bg-[#121212]/95 backdrop-blur-md">
+       <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            
+            <div class="footer-brand space-y-4">
+                <div class="footer-logo-modern text-primary">Thiên Mộng Hành</div>
+                <p class="footer-tagline">Khám phá kho tàng truyện chữ vô tận</p>
+                <div class="footer-social-modern">
+                    <a href="https://www.facebook.com/your_page" target="_blank" class="social-icon-modern facebook"
+                        title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" target="_blank" class="social-icon-modern twitter" title="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" target="_blank" class="social-icon-modern instagram" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" target="_blank" class="social-icon-modern discord" title="Discord">
+                        <i class="fab fa-discord"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-span-2 lg:col-span-2 grid grid-cols-2 gap-4">
+    
+    <div class="footer-links">
+        <h3 class="footer-heading text-base font-bold mb-4 border-l-4 border-primary pl-3 text-white">Danh Mục</h3>
+        <ul class="footer-menu space-y-2 text-sm text-gray-400">
+            <li><a href="/"><i class="fas fa-home w-5"></i> Trang chủ</a></li>
+            <li><a href="/stories/"><i class="fas fa-book w-5"></i> Truyện</a></li>
+            <li><a href="/categories/"><i class="fas fa-th-large w-5"></i> Thể loại</a></li>
+            <li><a href="/ranking/"><i class="fas fa-trophy w-5"></i> Bảng xếp hạng</a></li>
+        </ul>
+    </div>
+
+    <div class="footer-links">
+        <h3 class="footer-heading text-base font-bold mb-4 border-l-4 border-primary pl-3 text-white">Hỗ Trợ</h3>
+        <ul class="footer-menu space-y-2 text-sm text-gray-400">
+            <li><a href="/help/"><i class="fas fa-question-circle w-5"></i> Trợ giúp</a></li>
+            <li><a href="/contact/"><i class="fas fa-envelope w-5"></i> Liên hệ</a></li>
+            <li><a href="/terms/"><i class="fas fa-file-contract w-5"></i> Điều khoản</a></li>
+            <li><a href="/privacy/"><i class="fas fa-shield-alt w-5"></i> Bảo mật</a></li>
+        </ul>
+    </div>
+    
+</div>
+
+            <!-- Newsletter -->
+            <div class="footer-newsletter">
+                <h3 class="footer-heading text-base font-bold mb-4 border-l-4 border-primary pl-3 text-white">Nhận Thông Báo</h3>
+                <p class="newsletter-desc">Đăng ký để nhận cập nhật truyện mới nhất</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Email của bạn" class="newsletter-input">
+                    <button type="submit" class="newsletter-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+                <div class="footer-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-book-open"></i>
+                        <span>1000+ Truyện</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-users"></i>
+                        <span>50K+ Độc giả</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Bottom -->
+   <div class="footer-bottom border-t border-gray-700/30 py-6 mt-10">
+    <div class="container mx-auto px-1">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="copyright text-sm text-gray-500 text-center md:text-left">
+                © 2026 <span class="text-primary font-semibold">Thiên Mộng Hành</span>. All rights reserved.
+            </p>
+            
+            <div class="footer-bottom-links flex items-center gap-6 text-sm text-gray-500">
+                <a href="#" class="hover:text-primary transition-colors">Sitemap</a>
+                <a href="#" class="hover:text-primary transition-colors">RSS</a>
+                <a href="#" class="hover:text-primary transition-colors">API</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" id="scrollTopBtn" aria-label="Scroll to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+</footer>
+<script src="{% static 'story/js/footer .js' %}"></script>
