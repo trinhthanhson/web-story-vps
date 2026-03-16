@@ -27,35 +27,45 @@ function toggleTheme() {
 }
 
 // 3. Khởi tạo khi DOM sẵn sàng
-document.addEventListener("DOMContentLoaded", () => {
+function init() {
     const isLight = document.documentElement.classList.contains("light-mode");
     setThemeIcon(isLight);
 
-    // Xóa class no-transition sau 100ms
-    setTimeout(() => {
-        document.documentElement.classList.remove("no-transition");
-    }, 100);
-});
+    // Xóa class no-transition ngay (sớm nhất có thể)
+    document.documentElement.classList.remove("no-transition");
+
+    initHeaderScroll();
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+} else {
+    init();
+}
 
 // 4. Xử lý Scroll Header
-const header = document.getElementById("main-header");
+let header;
 let ticking = false;
 
-window.addEventListener("scroll", () => {
-    if (!ticking) {
-        window.requestAnimationFrame(() => {
-            if (header) {
-                header.classList.toggle("header-scrolled", window.scrollY > 30);
-            }
-            ticking = false;
-        });
-        ticking = true;
-    }
-}, { passive: true });
+function updateHeaderScroll() {
+    if (!header) return;
+    header.classList.toggle("header-scrolled", window.scrollY > 30);
+}
 
-window.addEventListener("load", () => {
-    document.documentElement.classList.remove("no-transition");
-});
+function initHeaderScroll() {
+    header = document.getElementById("main-header");
+    updateHeaderScroll();
+
+    window.addEventListener("scroll", () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                updateHeaderScroll();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+}
 function toggleMobileMenu() {
     const menu = document.getElementById("mobile-menu");
     menu.classList.toggle("translate-x-full");
@@ -68,3 +78,25 @@ function toggleCategory() {
     list.classList.toggle("hidden");
     icon.classList.toggle("rotate-180");
 }
+
+ function toggleMobileSearch() {
+    const bar = document.getElementById('mobile-search-bar');
+    const input = document.getElementById('mobile-search-input');
+    const isOpen = bar.style.maxHeight !== '0px' && bar.style.maxHeight !== '';
+
+    if (isOpen) {
+      bar.style.maxHeight = '0px';
+    } else {
+      bar.style.maxHeight = bar.scrollHeight + 'px';
+      setTimeout(() => input.focus(), 300);
+    }
+  }
+
+  // Đóng search bar khi bấm ra ngoài
+  document.addEventListener('click', function(e) {
+    const bar = document.getElementById('mobile-search-bar');
+    const btn = document.getElementById('mobile-search-btn');
+    if (bar && btn && !bar.contains(e.target) && !btn.contains(e.target)) {
+      bar.style.maxHeight = '0px';
+    }
+  });
