@@ -27,45 +27,35 @@ function toggleTheme() {
 }
 
 // 3. Khởi tạo khi DOM sẵn sàng
-function init() {
+document.addEventListener("DOMContentLoaded", () => {
     const isLight = document.documentElement.classList.contains("light-mode");
     setThemeIcon(isLight);
 
-    // Xóa class no-transition ngay (sớm nhất có thể)
-    document.documentElement.classList.remove("no-transition");
-
-    initHeaderScroll();
-}
-
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-} else {
-    init();
-}
+    // Xóa class no-transition sau 100ms
+    setTimeout(() => {
+        document.documentElement.classList.remove("no-transition");
+    }, 100);
+});
 
 // 4. Xử lý Scroll Header
-let header;
+const header = document.getElementById("main-header");
 let ticking = false;
 
-function updateHeaderScroll() {
-    if (!header) return;
-    header.classList.toggle("header-scrolled", window.scrollY > 30);
-}
+window.addEventListener("scroll", () => {
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            if (header) {
+                header.classList.toggle("header-scrolled", window.scrollY > 30);
+            }
+            ticking = false;
+        });
+        ticking = true;
+    }
+}, { passive: true });
 
-function initHeaderScroll() {
-    header = document.getElementById("main-header");
-    updateHeaderScroll();
-
-    window.addEventListener("scroll", () => {
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                updateHeaderScroll();
-                ticking = false;
-            });
-            ticking = true;
-        }
-    }, { passive: true });
-}
+window.addEventListener("load", () => {
+    document.documentElement.classList.remove("no-transition");
+});
 function toggleMobileMenu() {
     const menu = document.getElementById("mobile-menu");
     menu.classList.toggle("translate-x-full");
