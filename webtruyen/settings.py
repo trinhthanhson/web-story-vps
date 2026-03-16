@@ -9,8 +9,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-15&9bm1ik@+8py!xjzxn&
 
 DEBUG = 'RENDER' not in os.environ
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
+ALLOWED_HOSTS = ['*']
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
@@ -62,10 +63,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'webtruyen.wsgi.application'
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://postgres:1234@localhost:5432/webtruyen',
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'webtruyen',
+        'USER': 'admin',
+        'PASSWORD': '1234', # Phải khớp với bước 2
+        'HOST': '127.0.0.1', # Thử dùng IP thay vì localhost để tránh lỗi IPv6 (::1)
+        'PORT': '5432',
+    }
 }
 
 STATIC_URL = '/static/'
