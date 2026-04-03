@@ -1,5 +1,4 @@
 
-// Scroll to top functionality
 const scrollTopBtn = document.getElementById('scrollTopBtn');
 
 window.addEventListener('scroll', () => {
@@ -17,7 +16,6 @@ scrollTopBtn.addEventListener('click', () => {
     });
 });
 
-// Newsletter form
 document.querySelector('.newsletter-form')?.addEventListener('submit', (e) => {
     e.preventDefault();
     const email = e.target.querySelector('input').value;

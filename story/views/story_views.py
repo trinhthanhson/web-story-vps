@@ -4,7 +4,6 @@ from django.core.paginator import Paginator
 from ..models import Story, Category, Chapter, UserFavorite
 
 def home(request):
-    """Trang chủ hiển thị danh sách truyện mới cập nhật."""
     stories = Story.objects.all().order_by('-updated_at', '-created_at')
     categories = Category.objects.annotate(story_count=Count('stories'))
     
@@ -15,7 +14,6 @@ def home(request):
     return render(request, 'story/home.html', context)
 
 def story_list(request):
-    """Danh sách tất cả truyện với phân trang 50 mục/trang."""
     all_stories = Story.objects.prefetch_related('categories').order_by('-updated_at', '-created_at')
     categories = Category.objects.annotate(story_count=Count('stories'))
     
@@ -64,11 +62,9 @@ def story_detail(request, story_slug):
     return render(request, 'story/story_detail.html', context)
 
 def home_banner(request):
-    """Lấy top 5 truyện có ảnh bìa nhiều view nhất cho banner."""
     stories_for_banner = Story.objects.exclude(cover_image_url='').order_by('-views_count')[:5]
     return render(request, 'story/banner/banner.html', {'stories': stories_for_banner})
 def search_results(request):
-    """Xử lý tìm kiếm truyện theo tên, tác giả, dịch giả, mô tả hoặc thể loại."""
     query = request.GET.get('q', '').strip()
     categories = Category.objects.annotate(story_count=Count('stories'))
     

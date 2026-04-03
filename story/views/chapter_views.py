@@ -4,9 +4,6 @@ from decimal import Decimal
 from ..models import Story, Chapter, Category, ReadingHistory
 from django.utils import timezone 
 def chapter_detail(request, story_slug, chapter_number):
-    """
-    Hiển thị nội dung chương chi tiết và lưu lịch sử đọc.
-    """
     try:
         chapter_number_decimal = Decimal(str(chapter_number))
     except (ValueError, TypeError):
@@ -20,7 +17,6 @@ def chapter_detail(request, story_slug, chapter_number):
         chapter_number=chapter_number_decimal
     )
 
-    # --- LOGIC LƯU LỊCH SỬ ĐỌC TẠI ĐÂY ---
     if request.user.is_authenticated:
         ReadingHistory.objects.update_or_create(
             user=request.user,
@@ -30,7 +26,6 @@ def chapter_detail(request, story_slug, chapter_number):
                 'last_read_at': timezone.now()
             }
         )
-    # -------------------------------------
 
     previous_chapter = (
         Chapter.objects.filter(story=story, chapter_number__lt=chapter_number_decimal)

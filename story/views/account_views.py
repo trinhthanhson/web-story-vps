@@ -53,12 +53,10 @@ def login_view(request):
 
 @login_required
 def profile_view(request):
-    # 1. Lấy 10 truyện đã đọc gần đây nhất (sắp xếp theo thời gian mới nhất)
     recent_history = ReadingHistory.objects.filter(user=request.user)\
         .select_related('story', 'chapter')\
         .order_by('-last_read_at')[:10]
 
-    # 2. Lấy danh sách tất cả truyện yêu thích của người dùng
     favorite_stories = UserFavorite.objects.filter(user=request.user)\
         .select_related('story')\
         .order_by('-created_at') # Giả sử bạn có trường created_at, nếu không thì bỏ order_by

@@ -12,21 +12,17 @@ DEBUG = 'RENDER' not in os.environ
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # ALLOWED_HOSTS = ['*']
-# --- Cấu hình bảo mật Proxy ---
 ALLOWED_HOSTS = ['stories.tdemo.online', '36.50.54.194', '127.0.0.1', 'localhost']
 
-# Thêm cả 2 để đảm bảo xác thực thành công
 CSRF_TRUSTED_ORIGINS = [
     'https://stories.tdemo.online',
     'http://stories.tdemo.online'
 ]
 
-# Giúp Django nhận biết HTTPS khi đứng sau OLS/Cloudflare
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True
 
-# Chỉ bật cái này nếu bạn đã có SSL chạy ổn định
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
@@ -84,8 +80,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'webtruyen',
         'USER': 'admin',
-        'PASSWORD': '1234', # Phải khớp với bước 2
-        'HOST': '127.0.0.1', # Thử dùng IP thay vì localhost để tránh lỗi IPv6 (::1)
+        'PASSWORD': '1234', 
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }

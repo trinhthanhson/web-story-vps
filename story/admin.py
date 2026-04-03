@@ -7,13 +7,11 @@ import cloudinary.uploader
 from django.utils.text import slugify
 import unicodedata 
 
-# --- HELPER SLUG ---
 def vietnamese_slugify(s):
     s = unicodedata.normalize('NFD', s).encode('ascii', 'ignore').decode("utf-8")
     s = s.replace('đ', 'd').replace('Đ', 'D')
     return slugify(s)
 
-# --- FORM ---
 class CategoryAdminForm(forms.ModelForm):
     class Meta:
         model = Category
@@ -23,7 +21,6 @@ class CategoryAdminForm(forms.ModelForm):
         if 'slug' in self.fields:
             self.fields['slug'].required = False
 
-# --- TRANG ADMIN TRUYỆN ---
 @admin.register(Story)
 class StoryAdmin(admin.ModelAdmin):
     list_display = ('show_cover', 'title', 'author', 'translator', 'colored_status') 
@@ -32,21 +29,18 @@ class StoryAdmin(admin.ModelAdmin):
     filter_horizontal = ('categories',)
     readonly_fields = ('views_count', 'avg_rating', 'show_full_cover')
 
-    # Hiển thị ảnh nhỏ ở danh sách
     def show_cover(self, obj):
         if obj.cover_image_url:
             return format_html('<img src="{}" style="width: 45px; height: 60px; border-radius: 4px; object-fit: cover;" />', obj.cover_image_url)
         return "No Image"
     show_cover.short_description = "Ảnh bìa"
 
-    # Hiển thị ảnh lớn trong trang chi tiết
     def show_full_cover(self, obj):
         if obj.cover_image_url:
             return format_html('<img src="{}" style="max-width: 200px; border-radius: 8px;" />', obj.cover_image_url)
         return "Chưa có ảnh"
     show_full_cover.short_description = "Xem trước ảnh"
 
-    # Làm màu cho cột Trạng thái
     def colored_status(self, obj):
         colors = {
             'ongoing': '#28a745', # Xanh lá
@@ -60,7 +54,6 @@ class StoryAdmin(admin.ModelAdmin):
         )
     colored_status.short_description = "Trạng thái"
 
-    # Giữ nguyên logic save_model của bạn
     def save_model(self, request, obj, form, change):
         if not obj.slug:
             obj.slug = vietnamese_slugify(obj.title)
@@ -85,7 +78,6 @@ class StoryAdmin(admin.ModelAdmin):
             obj.upload_image_temp = None
         super().save_model(request, obj, form, change)
 
-# --- CÁC TRANG ADMIN KHÁC ---
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     form = CategoryAdminForm
