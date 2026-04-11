@@ -1,33 +1,39 @@
 import os
 from pathlib import Path
-import dj_database_url
 from django.utils.translation import gettext_lazy as _
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-15&9bm1ik@+8py!xjzxn&6k3_td#8mi79wq-#m4df%bz(0$3r7'
+)
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-15&9bm1ik@+8py!xjzxn&6k3_td#8mi79wq-#m4df%bz(0$3r7')
+DEBUG = False
 
-DEBUG = 'RENDER' not in os.environ
-
-# ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
-# ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['stories.tdemo.online', '36.50.54.194', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [
+    'thienmonghanh.com',
+    'www.thienmonghanh.com',
+    '36.50.54.194',
+    '127.0.0.1',
+    'localhost',
+]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://stories.tdemo.online',
-    'http://stories.tdemo.online'
+    'https://thienmonghanh.com',
+    'https://www.thienmonghanh.com',
+    'http://thienmonghanh.com',
+    'http://www.thienmonghanh.com',
 ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+# Nếu chưa bật SSL ngay thì tạm để False.
+# Khi cài SSL xong thì đổi lại True.
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -36,16 +42,17 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic', 
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-    'cloudinary', 
+    'cloudinary',
     'story',
 ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', 
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware', 
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -58,6 +65,7 @@ ROOT_URLCONF = 'webtruyen.urls'
 LOCALE_PATHS = [
     BASE_DIR / 'locale/',
 ]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -77,12 +85,16 @@ WSGI_APPLICATION = 'webtruyen.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'webtruyen',
-        'USER': 'admin',
-        'PASSWORD': '1234', 
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'thienmonghanhcom_YzZkMWNlOTY5ZTZlMW_dbname',
+        'USER': 'thienmonghanhcom_YzZkMWNlOTY5ZTZlMW_username',
+        'PASSWORD': 'YzZkMWNlOTY5ZTZlMWY5NTE0NzZkZjg5Mzk1',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
+        },
     }
 }
 
@@ -135,7 +147,6 @@ JAZZMIN_UI_TWEAKS = {
     "accent": "accent-primary",
 }
 
-# --- OTHERS ---
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -143,8 +154,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'vi'
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
 USE_I18N = True
 USE_TZ = True
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
